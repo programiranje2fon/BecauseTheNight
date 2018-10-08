@@ -6,9 +6,15 @@ package music;
 
 public class Song {
     
+    private static String concept;
+    
     private String title;
     private int year;
     private Performer performer;
+    
+    static {
+        concept = "A nice piece of music";
+    }
     
     public Song(String title, int year, Performer performer) {
         super();
@@ -27,6 +33,11 @@ public class Song {
         super();
     }
     
+    public static void defineConcept() {
+//        System.out.println(this.concept);       // No way - concept is static!
+        System.out.println(concept);
+    }
+    
     public void play() {
         System.out.print("Playing: " + this.title + "(" + this.performer.getName() + ")");
 //        System.out.println(this.title);
@@ -36,7 +47,11 @@ public class Song {
         return title;
     }
     public void setTitle(String title) {
-        this.title = title;
+        if ((title != null) && (title != "")) {
+            this.title = title;
+        } else {
+            System.out.println("Error - title must not be null or \"\"");
+        }
     }
     public int getYear() {
         return year;
@@ -49,6 +64,14 @@ public class Song {
     }
     public void setPerformer(Performer performer) {
         this.performer = performer;
+    }
+
+    public static String getConcept() {
+        return concept;
+    }
+
+    public static void setConcept(String concept) {
+        Song.concept = concept;
     }
 
 }

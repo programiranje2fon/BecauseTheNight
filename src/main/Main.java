@@ -14,7 +14,12 @@ public class Main {
         
 //        t.testPrintln();
 //        t.testKeyboardInput();
-        t.testSongs();
+//        t.testSongs();
+//        t.testIntegerAndDouble();
+//        t.testStatic();
+//        t.testLoops();
+//        t.testArrays();
+        t.testAlbum();
 
     }
 
