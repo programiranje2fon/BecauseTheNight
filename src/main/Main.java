@@ -19,8 +19,12 @@ public class Main {
 //        t.testStatic();
 //        t.testLoops();
 //        t.testArrays();
-        t.testSwitch();
+//        t.testSwitch();
 //        t.testAlbum();
+//        t.testStrings();
+//        t.testArrayList();
+//        t.testGregorianCalendar();
+        t.testNumberFormatting();
 
     }
 

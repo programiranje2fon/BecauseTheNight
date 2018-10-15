@@ -17,12 +17,24 @@ public class Performer {
         this.age = age;
     }
 
+    public Performer(String name) {
+        super();
+        this.name = name;
+        this.aliveAndKicking = true;
+        this.age = 30;
+    }
+
     public Performer() {
         super();
     }
     
     public void play(Song song) {
         System.out.print(this.name + ", playing " + song.getTitle());
+    }
+    
+    @Override
+    public String toString() {
+    	return "Performer: " + this.name + ", " + (this.aliveAndKicking ? "active" : "not active");
     }
 
     public String getName() {

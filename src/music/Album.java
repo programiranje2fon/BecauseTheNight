@@ -4,13 +4,25 @@
  */
 package music;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+
 public class Album {
     
     private String title;
     private int year;
     private Song[] songs;
+    private GregorianCalendar releaseDate;
     
-    public Album(String title, int year, Song[] songs) {
+    public Album(String title, int year, Song[] songs, GregorianCalendar releaseDate) {
+		super();
+		this.title = title;
+		this.year = year;
+		this.songs = songs;
+		this.releaseDate = releaseDate;
+	}
+
+	public Album(String title, int year, Song[] songs) {
         super();
         this.title = title;
         this.year = year;
@@ -26,6 +38,15 @@ public class Album {
 
     public Album() {
         super();
+    }
+    
+    public void printReleaseDate() {
+    	SimpleDateFormat df = new SimpleDateFormat("MMM d, yyyy");
+    	System.out.println(df.format(this.releaseDate.getTime()));
+    }
+
+    public String toString() {
+    	return this.title + ", " + this.year;
     }
 
     public String getTitle() {
@@ -51,5 +72,13 @@ public class Album {
     public void setSongs(Song[] songs) {
         this.songs = songs;
     }
+
+	public GregorianCalendar getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(GregorianCalendar releaseDate) {
+		this.releaseDate = releaseDate;
+	}
 
 }

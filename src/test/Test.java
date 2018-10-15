@@ -4,9 +4,12 @@
  */
 package test;
 
+import java.text.NumberFormat;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import music.Album;
+import music.Band;
 import music.Performer;
 import music.Song;
 
@@ -156,7 +159,8 @@ public class Test {
         Song[] songs = {becauseTheNight, dancingInTheDark, bornInTheUSA};
         Album bornInTheUSAAlbum = new Album("Born in the USA", 1984, songs);
         for (int i = 0; i < songs.length; i++) {
-            System.out.println(bornInTheUSAAlbum.getSongs()[i].getTitle());
+//            System.out.println(bornInTheUSAAlbum.getSongs()[i].getTitle());
+            System.out.println(bornInTheUSAAlbum.getSongs()[i]);
         }
         System.out.println();
         
@@ -164,6 +168,78 @@ public class Test {
 //        for (int i = 0; i < songs.length; i++) {
 //            System.out.println(bornInTheUSAAlbumV2.getSongs()[i].getTitle());       // No!!! Album.songs[i] is not initialized yet!
 //        }
+        
+        System.out.println(bornInTheUSAAlbum);
+    }
+    
+    public void testStrings() {
+    	Performer pattiSmith = new Performer("Patti Smith", true, 72);
+        Song becauseTheNight = new Song("Because the Night", 1978, pattiSmith);
+        
+        if (becauseTheNight.getTitle().contains("Because")) {
+        	System.out.println("\"Because\" is in \"Because the Night\"");
+        }
+        System.out.println();
+        
+        String[] wordsInTitle = becauseTheNight.getTitle().split(" ");
+        for (String string : wordsInTitle) {
+			System.out.println(string);
+		}
+        System.out.println();
+        
+        StringBuffer sb = new StringBuffer();
+        sb.append("Because").append(" the ").append("Night !");
+        System.out.println(sb);
+        sb.delete(sb.length() - 2, sb.length());
+        System.out.println(sb);
+    }
+    
+    public void testArrayList() {
+    	Performer pattiSmith = new Performer("Patti Smith");
+    	Performer jayDeeDaugherty = new Performer("Jay Dee Daugherty");
+    	Performer richardSohl = new Performer("Richard Sohl");
+    	Performer ivanKral = new Performer("Ivan Kral");
+    	Performer lennyKaye = new Performer("Lenny Kaye");
+    	
+    	Band pattiSmithGroup = new Band();
+    	pattiSmithGroup.setName("Patti Smith Group");
+    	pattiSmithGroup.addPerformer(pattiSmith);
+    	pattiSmithGroup.addPerformer(lennyKaye);
+    	pattiSmithGroup.addPerformer(ivanKral);
+    	pattiSmithGroup.addPerformer(richardSohl);
+    	pattiSmithGroup.addPerformer(jayDeeDaugherty);
+    	System.out.println(pattiSmithGroup);
+    }
+    
+    public void testGregorianCalendar() {
+    	GregorianCalendar c = new GregorianCalendar();
+    	System.out.println(c);
+    	System.out.println(c.getTime());
+    	System.out.println();
+    	
+    	Album easter = new Album("Easter", 1978, null, new GregorianCalendar(1978, 2, 3));
+    	easter.printReleaseDate();
+    	if (easter.getReleaseDate().before(new GregorianCalendar())) {
+    		System.out.println("That was long ago...");
+    	}
+    }
+    
+    public void testNumberFormatting() {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(2);
+        System.out.println((double) 6/7);
+        System.out.println("6/7 with NumberFormat and 2 fraction digits: " + nf.format((double) 6/7));
+        System.out.println("Math.PI with NumberFormat and 2 fraction digits: " + nf.format(Math.PI));
+        nf.setMaximumFractionDigits(3);
+        System.out.println("6/7 with NumberFormat and 3 fraction digits: " + nf.format((double) 6/7));
+        System.out.println();
+        
+        System.out.printf("%s%.2f%n", "6/7 with PrintStream.printf() and 2 fraction digits: ", (double) 6/7);
+        System.out.printf("%s%.3f%n", "6/7 with PrintStream.format() and 3 fraction digits: ", (double) 6/7);
+        System.out.println();
+        
+        System.out.println(String.format("%s%.2f", "6/7 with String.format() and 2 fraction digits: ", (double) 6/7));
+        System.out.println(String.format("%s%.3f", "6/7 with String.format() and 3 fraction digits: ", (double) 6/7));
     }
 
 }

@@ -42,6 +42,12 @@ public class Song {
         System.out.print("Playing: " + this.title + "(" + this.performer.getName() + ")");
 //        System.out.println(this.title);
     }
+    
+    @Override
+    public String toString() {
+//    	return "Song: " + this.title + ", " + this.year + " (" + this.getPerformer().getName() + ")";
+    	return this.title + ", " + this.year;
+    }
 
     public String getTitle() {
         return title;
