@@ -19,7 +19,8 @@ public class Main {
 //        t.testStatic();
 //        t.testLoops();
 //        t.testArrays();
-        t.testAlbum();
+        t.testSwitch();
+//        t.testAlbum();
 
     }
 

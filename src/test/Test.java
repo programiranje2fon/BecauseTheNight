@@ -112,6 +112,17 @@ public class Test {
         System.out.println();
     }
     
+    public void testSwitch() {
+        System.out.print("Enter an int between 0 and 2: ");
+        int a = IN.nextInt();
+        switch (a) {
+            case 0: System.out.println(0); break;
+            case 1: System.out.println(1); break;
+            case 2: System.out.println(2); break;
+            default: System.out.println("Value not between 0 and 2: " + a);
+        }
+    }
+    
     public void testArrays() {
 //        int[] a = new int[5];
 //        for (int i = 0; i < 6; i++) {       // exception!!!
