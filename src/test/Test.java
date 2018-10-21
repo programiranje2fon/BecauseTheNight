@@ -240,6 +240,7 @@ public class Test {
         
         System.out.println(String.format("%s%.2f", "6/7 with String.format() and 2 fraction digits: ", (double) 6/7));
         System.out.println(String.format("%s%.3f", "6/7 with String.format() and 3 fraction digits: ", (double) 6/7));
+        System.out.println();
     }
 
 }
