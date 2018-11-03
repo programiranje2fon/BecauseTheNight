@@ -10,8 +10,14 @@ import java.util.Scanner;
 
 import music.Album;
 import music.Band;
+import music.GuitarPlayer;
+import music.MusicPlayer;
 import music.Performer;
+import music.Singer;
 import music.Song;
+import music.enums.GuitarRole;
+import music.enums.Instrument;
+import music.enums.Vocals;
 
 public class Test {
     
@@ -242,5 +248,62 @@ public class Test {
         System.out.println(String.format("%s%.3f", "6/7 with String.format() and 3 fraction digits: ", (double) 6/7));
         System.out.println();
     }
+    
+    public void testInheritance() {
+        MusicPlayer bruceSpringsteen = new MusicPlayer("Bruce Springsteen",true, 69, Instrument.GUITAR);
+        System.out.println(bruceSpringsteen);
+        System.out.println();
+        
+        bruceSpringsteen.play();
+        System.out.println();
+        Song theRising = new Song("The Rising", 2002);
+        bruceSpringsteen.play(theRising);
+        System.out.println();
+        
+        GuitarPlayer georgeHarrison = new GuitarPlayer("George Harrison", false, 0, Instrument.GUITAR, GuitarRole.LEAD);
+        System.out.println(georgeHarrison);
+        System.out.println();
+        Song longLongLong = new Song("Long, Long, Long", 1968);
+        georgeHarrison.play(longLongLong);
+        System.out.println();
+        
+        Performer pattiSmith = new Performer("Patti Smith", true, 72);
+        Song becauseTheNight = new Song("Because the Night", 1978);
+        pattiSmith.play(becauseTheNight);
+        System.out.println();
 
+//        Polymorphism
+        
+        Performer[] performers = {pattiSmith, bruceSpringsteen, georgeHarrison};
+        for (Performer performer : performers) {
+            performer.play(longLongLong);
+            System.out.println();
+        }
+        
+    }
+
+    public void testEquals() {
+        
+//        Album easter = new Album("Easter", 1978, null, new GregorianCalendar(1978, 2, 3));
+//        Album e = new Album("Easter", 1978, null, new GregorianCalendar(1978, 2, 3));
+//        if (easter == e) {
+//            System.out.println(true);
+//        } else {
+//            System.out.println(false);
+//        }
+//        if (easter.getTitle() == e.getTitle()) {
+//            System.out.println(true);
+//        } else {
+//            System.out.println(false);
+//        }
+        
+        Singer pattiSmith = new Singer("Patti Smith", true, 72, Vocals.LEAD);
+        Singer patti = new Singer("Patti Smith", true, 72, Vocals.BACKGROUND);
+        if (pattiSmith.equals(patti)) {
+            System.out.println("Yes, thet's the same old Patti Smith :)");
+        } else {
+            System.out.println("No, that's someone else...");
+        }
+    }
+    
 }

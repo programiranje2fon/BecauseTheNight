@@ -6,9 +6,9 @@ package music;
 
 public class Performer {
     
-    private String name;
+    protected String name;
     private boolean aliveAndKicking;
-    private int age;
+    protected int age;
     
     public Performer(String name, boolean aliveAndKicking, int age) {
         super();
@@ -29,7 +29,8 @@ public class Performer {
     }
     
     public void play(Song song) {
-        System.out.print(this.name + ", playing " + song.getTitle());
+//        System.out.print(this.name + " playing " + song.getTitle());
+        System.out.println(this.name + ", playing \"" + song.getTitle() + "\"");
     }
     
     @Override
