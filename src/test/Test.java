@@ -300,7 +300,7 @@ public class Test {
         Singer pattiSmith = new Singer("Patti Smith", true, 72, Vocals.LEAD);
         Singer patti = new Singer("Patti Smith", true, 72, Vocals.BACKGROUND);
         if (pattiSmith.equals(patti)) {
-            System.out.println("Yes, thet's the same old Patti Smith :)");
+            System.out.println("Yes, that's the same old Patti Smith :)");
         } else {
             System.out.println("No, that's someone else...");
         }
