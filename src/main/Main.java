@@ -26,7 +26,8 @@ public class Main {
 //        t.testGregorianCalendar();
 //        t.testNumberFormatting();
 //        t.testInheritance();
-        t.testEquals();
+//        t.testEquals();
+        t.testAbstractClasses();
 
     }
 

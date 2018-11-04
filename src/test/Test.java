@@ -10,11 +10,14 @@ import java.util.Scanner;
 
 import music.Album;
 import music.Band;
+import music.Composer;
 import music.GuitarPlayer;
 import music.MusicPlayer;
+import music.Musician;
 import music.Performer;
 import music.Singer;
 import music.Song;
+import music.enums.Genre;
 import music.enums.GuitarRole;
 import music.enums.Instrument;
 import music.enums.Vocals;
@@ -304,6 +307,30 @@ public class Test {
         } else {
             System.out.println("No, that's someone else...");
         }
+    }
+    
+    public void testAbstractClasses() {
+        
+//        Musician m = new Musician(Genre.BLUES);                       // No! Musician is an abstract class!
+//        Musician m = new Musician(Genre.BLUES) {
+//            
+//            @Override
+//            public void play() {
+//                // TODO Auto-generated method stub
+//                
+//            }
+//        };
+//        System.out.println(m.getGenre());
+        
+        Performer p = new Performer();
+        p.play();
+        System.out.println(p.getGenre());
+        p.setGenre(Genre.BLUES);
+        System.out.println(p.getGenre());
+        System.out.println();
+        
+        Composer c = new Composer(Genre.ROCK, "Mike Stoller");          // the composer of Elvis Presley's hit "Jailhouse Rock" :)
+        c.play();
     }
     
 }

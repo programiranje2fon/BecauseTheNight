@@ -4,7 +4,7 @@
  */
 package music;
 
-public class Performer {
+public class Performer extends Musician {
     
     protected String name;
     private boolean aliveAndKicking;
@@ -28,6 +28,12 @@ public class Performer {
         super();
     }
     
+    @Override
+    public void play() {
+        // TODO Auto-generated method stub
+        System.out.println("I'm playing...");
+    }
+
     public void play(Song song) {
 //        System.out.print(this.name + " playing " + song.getTitle());
         System.out.println(this.name + ", playing \"" + song.getTitle() + "\"");
