@@ -4,12 +4,23 @@
  */
 package music;
 
-public class Performer extends Musician {
+import music.enums.Genre;
+
+public class Performer extends Musician implements PerformingArtist {
     
     protected String name;
     private boolean aliveAndKicking;
     protected int age;
+    protected Performance firstPerformance;
     
+    public Performer(Genre genre, String name, boolean aliveAndKicking, int age, Performance firstPerformance) {
+        super(genre);
+        this.name = name;
+        this.aliveAndKicking = aliveAndKicking;
+        this.age = age;
+        this.firstPerformance = firstPerformance;
+    }
+
     public Performer(String name, boolean aliveAndKicking, int age) {
         super();
         this.name = name;
@@ -40,6 +51,16 @@ public class Performer extends Musician {
     }
     
     @Override
+    public void showFirstPerformance() {
+        System.out.println(this.name + "'s first performance: " + this.firstPerformance);
+    }
+
+    @Override
+    public double avgPerformanceTime() {
+        return this.age > 50 ? 120 : 70;
+    }
+
+    @Override
     public String toString() {
     	return "Performer: " + this.name + ", " + (this.aliveAndKicking ? "active" : "not active");
     }
@@ -66,6 +87,14 @@ public class Performer extends Musician {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Performance getFirstPerformance() {
+        return firstPerformance;
+    }
+
+    public void setFirstPerformance(Performance firstPerformance) {
+        this.firstPerformance = firstPerformance;
     }
 
 }

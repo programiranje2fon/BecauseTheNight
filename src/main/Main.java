@@ -27,7 +27,9 @@ public class Main {
 //        t.testNumberFormatting();
 //        t.testInheritance();
 //        t.testEquals();
-        t.testAbstractClasses();
+//        t.testAbstractClasses();
+//        t.testInterfaces();
+        t.testIterators();
 
     }
 

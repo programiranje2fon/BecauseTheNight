@@ -5,7 +5,12 @@
 package test;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 import music.Album;
@@ -14,7 +19,9 @@ import music.Composer;
 import music.GuitarPlayer;
 import music.MusicPlayer;
 import music.Musician;
+import music.Performance;
 import music.Performer;
+import music.PerformingArtist;
 import music.Singer;
 import music.Song;
 import music.enums.Genre;
@@ -331,6 +338,71 @@ public class Test {
         
         Composer c = new Composer(Genre.ROCK, "Mike Stoller");          // the composer of Elvis Presley's hit "Jailhouse Rock" :)
         c.play();
+    }
+    
+    public void testInterfaces() {
+        Performance p1 = new Performance(new GregorianCalendar(1972, 9, 25), "Point Pleasant, NJ");
+        Performance p2 = new Performance(new GregorianCalendar(1971, 1, 10), "New York City, NY");
+        
+        Band eStreetBand = new Band("E Street Band", new ArrayList<Performer>(), false, p1, 200);
+        eStreetBand.addPerformer(new Performer("Bruce Springsteen"));
+        Performer patti = new Performer(Genre.ROCK, "Patti Smith", true, 72, p2);
+        
+        PerformingArtist[] artists = {eStreetBand, patti};
+        artists[0].showFirstPerformance();
+        artists[1].showFirstPerformance();
+        artists[0].showMembers();
+        System.out.println();
+        
+        List<String> titles = new LinkedList<String>();
+        titles.add("Because the Night");
+        titles.add("Dancing Barefoot");
+        for (String title : titles) {
+            System.out.println(title);
+        }
+    }
+    
+    public void testIterators() {
+        Performer pattiSmith = new Performer("Patti Smith");
+        Performer jayDeeDaugherty = new Performer("Jay Dee Daugherty");
+        Performer richardSohl = new Performer("Richard Sohl");
+        Performer ivanKral = new Performer("Ivan Kral");
+        Performer lennyKaye = new Performer("Lenny Kaye");
+        
+        Band pattiSmithGroup = new Band();
+        pattiSmithGroup.setName("Patti Smith Group");
+        pattiSmithGroup.addPerformer(pattiSmith);
+        pattiSmithGroup.addPerformer(lennyKaye);
+        pattiSmithGroup.addPerformer(ivanKral);
+        pattiSmithGroup.addPerformer(richardSohl);
+        pattiSmithGroup.addPerformer(jayDeeDaugherty);
+        System.out.println(pattiSmithGroup);
+
+//        while (pattiSmithGroup.hasNext()) {
+//            System.out.println(pattiSmithGroup.next());
+//        }
+//        System.out.println();
+
+//        for (Performer p : pattiSmithGroup.getMembers()) {        // No! Throws ConcurrentModificationException.
+//            pattiSmithGroup.remove(p);
+//        }
+        
+//        pattiSmithGroup.removeAllMembers();
+        
+//        Iterator<Performer> i = pattiSmithGroup.getMembers().iterator();
+//        while (i.hasNext()) {
+//            i.next();
+//            i.remove();
+//        }
+        
+        Iterator<Performer> i = pattiSmithGroup.iterator();
+        while (i.hasNext()) {
+            i.next();
+            i.remove();
+        }
+        
+        System.out.println(pattiSmithGroup);
+        
     }
     
 }
