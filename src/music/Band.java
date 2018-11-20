@@ -86,7 +86,7 @@ public class Band implements PerformingArtist, Iterator<Performer>, Iterable<Per
     }
 
     @Override
-    public double avgPerformanceTime() {
+    public double showAvgPerformanceTime() {
         // TODO Auto-generated method stub
         return 0;
     }

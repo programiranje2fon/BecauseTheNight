@@ -56,7 +56,7 @@ public class Performer extends Musician implements PerformingArtist {
     }
 
     @Override
-    public double avgPerformanceTime() {
+    public double showAvgPerformanceTime() {
         return this.age > 50 ? 120 : 70;
     }
 

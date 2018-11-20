@@ -7,7 +7,7 @@ package music;
 public interface PerformingArtist {
     
     public void showFirstPerformance();
-    public double avgPerformanceTime();
+    public double showAvgPerformanceTime();
     default public void showMembers() {}
 
 }
