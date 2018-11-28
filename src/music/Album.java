@@ -44,6 +44,25 @@ public class Album {
     	SimpleDateFormat df = new SimpleDateFormat("MMM d, yyyy");
     	System.out.println(df.format(this.releaseDate.getTime()));
     }
+    
+    public boolean includes(Song song) {
+        boolean includes = false;
+        for (Song s : songs) {
+            if (s.getTitle().equals(song.getTitle())) {
+                includes = true;
+                break;
+            }
+        }
+        return includes;
+    }
+    
+    public static void playSong(Song song, Album album) throws SongNotIncludedException {
+        if (album.includes(song)) {
+            song.play();
+        } else {
+            throw new SongNotIncludedException(song, album);
+        }
+    }
 
     public String toString() {
     	return this.title + ", " + this.year;

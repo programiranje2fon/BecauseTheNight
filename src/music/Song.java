@@ -39,7 +39,7 @@ public class Song {
     }
     
     public void play() {
-        System.out.print("Playing: " + this.title + "(" + this.performer.getName() + ")");
+        System.out.print("Playing: " + this.title + " (" + this.performer.getName() + ")");
 //        System.out.println(this.title);
     }
     

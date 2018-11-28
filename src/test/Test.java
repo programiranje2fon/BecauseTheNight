@@ -24,6 +24,7 @@ import music.Performer;
 import music.PerformingArtist;
 import music.Singer;
 import music.Song;
+import music.SongNotIncludedException;
 import music.enums.Genre;
 import music.enums.GuitarRole;
 import music.enums.Instrument;
@@ -403,6 +404,30 @@ public class Test {
         
         System.out.println(pattiSmithGroup);
         
+    }
+    
+    public void testExceptions() {
+        
+        Performer bruceSpringsteen = new Performer("Bruce Springsteen");
+        
+        Song gloryDays = new Song("Glory Days", 1984, bruceSpringsteen);
+        Song dancingInTheDark = new Song("Dancing in the Dark", 1984, bruceSpringsteen);
+        Song bornInTheUSA = new Song("Born in the USA", 1984, bruceSpringsteen);
+        
+        Song becauseTheNight = new Song("Because the Night", 1978, bruceSpringsteen);
+        
+        Song[] songs = {gloryDays, dancingInTheDark, bornInTheUSA};
+        Album bornInTheUSAAlbum = new Album("Born in the USA", 1984, songs);
+        
+        try {
+//            Album.playSong(gloryDays, bornInTheUSAAlbum);
+            Album.playSong(becauseTheNight, bornInTheUSAAlbum);
+        } catch (SongNotIncludedException e) {
+            e.printStackTrace();
+            System.out.println("Handling exception: " + e.getMessage());
+        } finally {
+            System.out.println("\nFinally, some optional steps...");
+        }
     }
     
 }
