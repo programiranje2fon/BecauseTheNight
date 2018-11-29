@@ -62,22 +62,6 @@ public class Band implements PerformingArtist, Iterator<Performer>, Iterable<Per
     }
     
     @Override
-    public Iterator<Performer> iterator() {
-        return this.members.iterator();
-    }
-    
-    public void removeAllMembers() {
-//        for (Performer p : this.members) {        // No! Throws ConcurrentModificationException.
-//            this.remove(p);
-//        }
-        Iterator<Performer> i = this.members.iterator();
-        while (i.hasNext()) {
-            i.next();
-            i.remove();
-        }
-    }
-    
-    @Override
     public void showFirstPerformance() {
         SimpleDateFormat df = new SimpleDateFormat("MMM d, yyyy");
         System.out.println(this.name + " has performed in public for the first time on " + 
@@ -118,6 +102,22 @@ public class Band implements PerformingArtist, Iterator<Performer>, Iterable<Per
         }
     }
 
+    @Override
+    public Iterator<Performer> iterator() {
+        return this.members.iterator();
+    }
+    
+    public void removeAllMembers() {
+//        for (Performer p : this.members) {        // No! Throws ConcurrentModificationException.
+//            this.remove(p);
+//        }
+        Iterator<Performer> i = this.members.iterator();
+        while (i.hasNext()) {
+            i.next();
+            i.remove();
+        }
+    }
+    
 	@Override
 	public String toString() {
 		StringBuffer sb = (new StringBuffer()).append("Band: " + this.name + '\n');

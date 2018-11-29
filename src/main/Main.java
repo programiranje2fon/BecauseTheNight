@@ -29,8 +29,8 @@ public class Main {
 //        t.testEquals();
 //        t.testAbstractClasses();
 //        t.testInterfaces();
-//        t.testIterators();
-        t.testExceptions();
+        t.testIterators();
+//        t.testExceptions();
 
     }
 

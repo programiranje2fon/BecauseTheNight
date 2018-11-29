@@ -388,6 +388,11 @@ public class Test {
 //            pattiSmithGroup.remove(p);
 //        }
         
+//        while (pattiSmithGroup.hasNext()) {
+//            pattiSmithGroup.remove(pattiSmithGroup.next());
+//        }
+//        System.out.println(pattiSmithGroup);
+        
 //        pattiSmithGroup.removeAllMembers();
         
 //        Iterator<Performer> i = pattiSmithGroup.getMembers().iterator();
