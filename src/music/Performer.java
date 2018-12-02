@@ -4,9 +4,11 @@
  */
 package music;
 
+import java.io.Serializable;
+
 import music.enums.Genre;
 
-public class Performer extends Musician implements PerformingArtist {
+public class Performer extends Musician implements PerformingArtist, Serializable {
     
     protected String name;
     private boolean aliveAndKicking;

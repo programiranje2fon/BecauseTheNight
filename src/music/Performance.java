@@ -4,10 +4,11 @@
  */
 package music;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
-public class Performance {
+public class Performance implements Serializable {
     
     private GregorianCalendar date;
     private String location;

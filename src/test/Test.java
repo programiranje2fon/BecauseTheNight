@@ -4,6 +4,15 @@
  */
 package test;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -433,6 +442,76 @@ public class Test {
         } finally {
             System.out.println("\nFinally, some optional steps...");
         }
+    }
+    
+    public void testTextFiles() {
+        
+        Song gloryDays = new Song("Glory Days", 1984);
+        Song dancingInTheDark = new Song("Dancing in the Dark", 1984);
+        Song bornInTheUSA = new Song("Born in the USA", 1984);
+        
+        File f = new File("songs.txt");
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+            out.println(gloryDays.getTitle());
+            out.println(gloryDays.getYear());
+            out.println(dancingInTheDark.getTitle());
+            out.println(dancingInTheDark.getYear());
+            out.println(bornInTheUSA.getTitle());
+            out.println(bornInTheUSA.getYear());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("Songs saved to a text file.");
+        System.out.println();
+        
+        Song[] songs = new Song[3];
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(f));
+            for (int i = 0; i < songs.length; i++) {
+                songs[i] = new Song();
+                songs[i].setTitle(in.readLine());
+                songs[i].setYear(Integer.parseInt(in.readLine()));
+            }
+            in.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        for (Song song : songs) {
+            System.out.println(song);
+        }
+        System.out.println();
+        
+        System.out.print("Enter something: ");
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            System.out.println(in.readLine());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public void testSerialization() {
+        Song gloryDays = new Song("Glory Days", 1984);
+        gloryDays.serialize("Glory Days.serialized");
+        System.out.println("Song serialized.");
+        System.out.println();
+    }
+    
+    public void testDeserialization() {
+        Song gloryDays = Song.deserialize("Glory Days.serialized");
+        System.out.println("Song deserialized.");
+        System.out.println(gloryDays);
     }
     
 }

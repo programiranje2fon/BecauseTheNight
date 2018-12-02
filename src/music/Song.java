@@ -4,7 +4,19 @@
  */
 package music;
 
-public class Song {
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class Song implements Serializable {
+    
+    static final long serialVersionUID = 2242L;
     
     private static String concept;
     
@@ -41,6 +53,53 @@ public class Song {
     public void play() {
         System.out.print("Playing: " + this.title + " (" + this.performer.getName() + ")");
 //        System.out.println(this.title);
+    }
+    
+    public void serialize(String filename) {
+//        ObjectOutputStream out = null;
+//        try {
+//            out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(filename))));
+//            out.writeObject(this);
+//        } catch (FileNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } finally {
+//            if (out != null) {
+//                try {
+//                    out.flush();
+//                    out.close();
+//                } catch (IOException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File(filename))))) {
+            out.writeObject(this);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    public static Song deserialize(String filename) {
+        Song song = null;
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(filename)))) {
+            song = (Song) in.readObject();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return song;
     }
     
     @Override
