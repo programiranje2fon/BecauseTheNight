@@ -67,6 +67,7 @@ public class NewPerformerDialog extends JDialog {
     /**
      * Create the dialog.
      */
+    
     public NewPerformerDialog(JFrame owner, boolean modal) {
         super(owner, modal);
         setTitle("New performer");
