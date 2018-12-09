@@ -13,14 +13,17 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import music.Performer;
+import music.Song;
 
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import java.awt.Color;
@@ -33,6 +36,7 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
@@ -78,6 +82,8 @@ public class MainAppWindow {
     
     private NewPerformerDialog newPerformerDialog;
     private Performer newPerformer;
+    private ArrayList<Performer> performers = new ArrayList<Performer>();
+    private ArrayList<Song> songs = new ArrayList<Song>();
 
     /**
      * Launch the application.
@@ -214,7 +220,7 @@ public class MainAppWindow {
         if (lblIllustration == null) {
         	lblIllustration = new JLabel("");
         	lblIllustration.setHorizontalAlignment(SwingConstants.CENTER);
-        	lblIllustration.setIcon(new ImageIcon("M:\\Vladan\\Courses\\P2\\My Java Programs\\Eclipse Workspace\\BecauseTheNight\\Because the Night.jpg"));
+        	lblIllustration.setIcon(new ImageIcon("M:\\Vladan\\Courses\\P2\\My Java Programs\\Eclipse Workspace\\BecauseTheNight\\Because the Night Sheet.png"));
         }
         return lblIllustration;
     }
@@ -344,6 +350,19 @@ public class MainAppWindow {
     private JMenuItem getMntmSave() {
         if (mntmSave == null) {
         	mntmSave = new JMenuItem("Save...");
+        	mntmSave.addActionListener(new ActionListener() {
+        	    public void actionPerformed(ActionEvent e) {
+        	        JFileChooser c = new JFileChooser();
+        	        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        	            "Image files", "jpg", "jpeg", "gif", "png");
+        	        c.setFileFilter(filter);
+        	        int returnVal = c.showSaveDialog(frmBecauseTheNight);
+        	        if(returnVal == JFileChooser.APPROVE_OPTION) {
+        	           System.out.println("You chose to open this file: " +
+        	                c.getSelectedFile().getName());
+        	        }
+        	    }
+        	});
         }
         return mntmSave;
     }
