@@ -19,5 +19,17 @@ public class Utility {
         sd.mkdirs();
         return sd.getAbsolutePath();
     }
+    
+    public static String getResourcesDir() {
+        return mkProjectSubdir("resources") + '\\';
+    }
+    
+    public static String getSongsFilename() {
+        return getResourcesDir() + "songs";
+    }
+
+    public static String getPerformersFilename() {
+        return getResourcesDir() + "performers";
+    }
 
 }

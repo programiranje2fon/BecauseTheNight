@@ -144,7 +144,8 @@ public class MainAppWindow {
     }
 
     private void deserializeData() {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "performers")))) {
+//        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "performers")))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.getPerformersFilename())))) {
             performers = (ArrayList<Performer>) in.readObject();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -157,7 +158,8 @@ public class MainAppWindow {
             comboBoxPerformer.addItem(performer.getName());
         }
         
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "songs")))) {
+//        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "songs")))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.getSongsFilename())))) {
             songs = (ArrayList<Song>) in.readObject();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -271,7 +273,8 @@ public class MainAppWindow {
         	lblIllustration = new JLabel("");
         	lblIllustration.setHorizontalAlignment(SwingConstants.CENTER);
 //            lblIllustration.setIcon(new ImageIcon("M:\\Vladan\\Courses\\P2\\My Java Programs\\Eclipse Workspace\\BecauseTheNight\\Because the Night Sheet.png"));
-            lblIllustration.setIcon(new ImageIcon(Utility.mkProjectSubdir("resources") + '\\' + "Because the Night Sheet.png"));
+//            lblIllustration.setIcon(new ImageIcon(Utility.mkProjectSubdir("resources") + '\\' + "Because the Night Sheet.png"));
+            lblIllustration.setIcon(new ImageIcon(Utility.getResourcesDir() + "Because the Night Sheet.png"));
         }
         return lblIllustration;
     }
@@ -464,13 +467,13 @@ public class MainAppWindow {
         	    }
 
                 private void serialize() {
-                    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "songs")))) {
+                    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(Utility.getSongsFilename())))) {
                         out.writeObject(songs);
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
-                    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "performers")))) {
+                    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(Utility.getPerformersFilename())))) {
                         out.writeObject(performers);
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
@@ -568,7 +571,7 @@ public class MainAppWindow {
         	        if(returnVal == JFileChooser.APPROVE_OPTION) {
 //        	           System.out.println("You chose to open this file: " +
 //        	                c.getSelectedFile().getName());
-        	            lblIllustration.setIcon(new ImageIcon(Utility.mkProjectSubdir("resources") + '\\' + c.getSelectedFile().getName()));
+        	            lblIllustration.setIcon(new ImageIcon(Utility.getResourcesDir() + c.getSelectedFile().getName()));
         	        }
         	    }
         	});

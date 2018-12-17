@@ -521,6 +521,9 @@ public class Test {
     
     public void testMkProjectSubdir() {
         System.out.println(Utility.mkProjectSubdir("resources"));
+        System.out.println(Utility.getResourcesDir());
+        System.out.println(Utility.getSongsFilename());
+        System.out.println(Utility.getPerformersFilename());
     }
     
 }
