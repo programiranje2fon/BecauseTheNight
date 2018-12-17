@@ -33,7 +33,9 @@ public class Main {
 //        t.testExceptions();
 //        t.testTextFiles();
 //        t.testSerialization();
-        t.testDeserialization();
+//        t.testDeserialization();
+        t.testProjectDir();
+        t.testMkProjectSubdir();
 
     }
 

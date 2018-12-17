@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
+import util.Utility;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.UIManager;
@@ -27,18 +29,30 @@ import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import java.awt.Color;
+
+import javax.print.attribute.TextSyntax;
 import javax.swing.ButtonGroup;
 import java.awt.Dimension;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class MainAppWindow {
 
@@ -58,7 +72,7 @@ public class MainAppWindow {
     private JLabel lblTitle;
     private JLabel lblYear;
     private JButton btnSaveSong;
-    private JTextField textField_Year;
+    private JTextField textFieldYear;
     private JLabel lblPerformer;
     private JComboBox comboBoxPerformer;
     private JLabel lblDetails;
@@ -82,8 +96,10 @@ public class MainAppWindow {
     
     private NewPerformerDialog newPerformerDialog;
     private Performer newPerformer;
+    private Song song;
     private ArrayList<Performer> performers = new ArrayList<Performer>();
     private ArrayList<Song> songs = new ArrayList<Song>();
+    private JButton btnSelectIllustration;
 
     /**
      * Launch the application.
@@ -120,9 +136,42 @@ public class MainAppWindow {
         frmBecauseTheNight.getContentPane().add(getNorthPanel(), BorderLayout.NORTH);
         frmBecauseTheNight.getContentPane().add(getWestPanel(), BorderLayout.WEST);
         frmBecauseTheNight.getContentPane().add(getEastPanel(), BorderLayout.EAST);
-        frmBecauseTheNight.getContentPane().add(getSouthPanel(), BorderLayout.SOUTH);
         frmBecauseTheNight.getContentPane().add(getCentralPanel(), BorderLayout.CENTER);
+        frmBecauseTheNight.getContentPane().add(getSouthPanel(), BorderLayout.SOUTH);
         frmBecauseTheNight.setJMenuBar(getMenuBar());
+        
+        deserializeData();
+    }
+
+    private void deserializeData() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "performers")))) {
+            performers = (ArrayList<Performer>) in.readObject();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        for (Performer performer : performers) {
+            comboBoxPerformer.addItem(performer.getName());
+        }
+        
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "songs")))) {
+            songs = (ArrayList<Song>) in.readObject();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        for (Song song : songs) {
+            comboBoxSongs.addItem(song.getTitle());
+        }
+        
+        textAreaLyrics.setText(songs.get(0).getLyrics());
+        lblIllustration.setIcon(songs.get(0).getIcon());
     }
 
     private JPanel getNorthPanel() {
@@ -136,14 +185,15 @@ public class MainAppWindow {
         if (westPanel == null) {
         	westPanel = new JPanel();
         	westPanel.setPreferredSize(new Dimension(150, 10));
-        	westPanel.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow][]"));
+        	westPanel.setLayout(new MigLayout("", "[grow]", "[][][][][][][grow][][]"));
         	westPanel.add(getLblSongsCombo(), "cell 0 0");
         	westPanel.add(getComboBox_1(), "cell 0 1,growx");
         	westPanel.add(getLblTitle(), "cell 0 2");
         	westPanel.add(getTextFieldTitle(), "cell 0 3,growx");
         	westPanel.add(getLblYear(), "cell 0 4");
         	westPanel.add(getTextField_Year(), "cell 0 5,growx");
-        	westPanel.add(getBtnSaveSong(), "cell 0 7,growx");
+        	westPanel.add(getBtnSelectIllustration(), "cell 0 7,growx");
+        	westPanel.add(getBtnSaveSong(), "cell 0 8,growx");
         }
         return westPanel;
     }
@@ -220,7 +270,8 @@ public class MainAppWindow {
         if (lblIllustration == null) {
         	lblIllustration = new JLabel("");
         	lblIllustration.setHorizontalAlignment(SwingConstants.CENTER);
-        	lblIllustration.setIcon(new ImageIcon("M:\\Vladan\\Courses\\P2\\My Java Programs\\Eclipse Workspace\\BecauseTheNight\\Because the Night Sheet.png"));
+//            lblIllustration.setIcon(new ImageIcon("M:\\Vladan\\Courses\\P2\\My Java Programs\\Eclipse Workspace\\BecauseTheNight\\Because the Night Sheet.png"));
+            lblIllustration.setIcon(new ImageIcon(Utility.mkProjectSubdir("resources") + '\\' + "Because the Night Sheet.png"));
         }
         return lblIllustration;
     }
@@ -246,15 +297,49 @@ public class MainAppWindow {
     private JButton getBtnSaveSong() {
         if (btnSaveSong == null) {
         	btnSaveSong = new JButton("Save song");
+        	btnSaveSong.addActionListener(new ActionListener() {
+        	    public void actionPerformed(ActionEvent arg0) {
+        	        if ((textFieldTitle.getText() != null) && (!textFieldTitle.getText().equals(""))) {
+        	            
+        	            comboBoxSongs.addItem(textFieldTitle.getText());
+        	            
+        	            song = new Song();
+        	            song.setTitle(textFieldTitle.getText());
+        	            song.setYear(Integer.parseInt(textFieldYear.getText()));
+        	            song.setLyrics(textAreaLyrics.getText());
+        	            
+        	            Performer performer = new Performer((String) comboBoxPerformer.getSelectedItem());
+        	            boolean found = false;
+        	            for (Performer p : performers) {
+                            if (performer.getName().equals(p.getName())) {
+                                performer = p;
+                                found = true;
+                                break;
+                            }
+                        }
+        	            if (found) {
+                            song.setPerformer(performer);
+                        }
+        	            
+        	            if (lblIllustration.getIcon() != null) {
+        	                song.setIcon(lblIllustration.getIcon());
+        	            }
+        	            
+        	            lblSongs.setText("A nice song: " + (String) comboBoxSongs.getSelectedItem());
+        	            
+        	            songs.add(song);
+        	        }
+        	    }
+        	});
         }
         return btnSaveSong;
     }
     private JTextField getTextField_Year() {
-        if (textField_Year == null) {
-        	textField_Year = new JTextField();
-        	textField_Year.setColumns(10);
+        if (textFieldYear == null) {
+        	textFieldYear = new JTextField();
+        	textFieldYear.setColumns(10);
         }
-        return textField_Year;
+        return textFieldYear;
     }
     private JLabel getLblPerformer() {
         if (lblPerformer == null) {
@@ -281,6 +366,11 @@ public class MainAppWindow {
         	rdbtnBasic = new JRadioButton("Basic");
         	rdbtnBasic.addActionListener(new ActionListener() {
         	    public void actionPerformed(ActionEvent arg0) {
+        	        splitPane.setVisible(false);
+        	        lblPerformer.setVisible(false);
+        	        comboBoxPerformer.setVisible(false);
+        	        btnDeletePerformer.setVisible(false);
+        	        btnNewPerformer.setVisible(false);
         	    }
         	});
         	buttonGroup.add(rdbtnBasic);
@@ -290,6 +380,15 @@ public class MainAppWindow {
     private JRadioButton getRdbtnStandard() {
         if (rdbtnStandard == null) {
         	rdbtnStandard = new JRadioButton("Standard");
+        	rdbtnStandard.addActionListener(new ActionListener() {
+        	    public void actionPerformed(ActionEvent arg0) {
+                    splitPane.setVisible(true);
+                    lblPerformer.setVisible(false);
+                    comboBoxPerformer.setVisible(false);
+                    btnDeletePerformer.setVisible(false);
+                    btnNewPerformer.setVisible(false);
+        	    }
+        	});
         	rdbtnStandard.setSelected(true);
         	buttonGroup.add(rdbtnStandard);
         }
@@ -298,6 +397,15 @@ public class MainAppWindow {
     private JRadioButton getRdbtnAll() {
         if (rdbtnAll == null) {
         	rdbtnAll = new JRadioButton("All");
+        	rdbtnAll.addActionListener(new ActionListener() {
+        	    public void actionPerformed(ActionEvent e) {
+                    splitPane.setVisible(true);
+                    lblPerformer.setVisible(true);
+                    comboBoxPerformer.setVisible(true);
+                    btnDeletePerformer.setVisible(true);
+                    btnNewPerformer.setVisible(true);
+        	    }
+        	});
         	buttonGroup.add(rdbtnAll);
         }
         return rdbtnAll;
@@ -352,16 +460,24 @@ public class MainAppWindow {
         	mntmSave = new JMenuItem("Save...");
         	mntmSave.addActionListener(new ActionListener() {
         	    public void actionPerformed(ActionEvent e) {
-        	        JFileChooser c = new JFileChooser();
-        	        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-        	            "Image files", "jpg", "jpeg", "gif", "png");
-        	        c.setFileFilter(filter);
-        	        int returnVal = c.showSaveDialog(frmBecauseTheNight);
-        	        if(returnVal == JFileChooser.APPROVE_OPTION) {
-        	           System.out.println("You chose to open this file: " +
-        	                c.getSelectedFile().getName());
-        	        }
+        	        serialize();
         	    }
+
+                private void serialize() {
+                    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "songs")))) {
+                        out.writeObject(songs);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(Utility.mkProjectSubdir("resources") + '\\' + "performers")))) {
+                        out.writeObject(performers);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    JOptionPane.showMessageDialog(frmBecauseTheNight, "Data saved.");
+                }
         	});
         }
         return mntmSave;
@@ -384,6 +500,10 @@ public class MainAppWindow {
         	btnNewPerformer.addActionListener(new ActionListener() {
         	    public void actionPerformed(ActionEvent e) {
         	        newPerformer = getNewPerformerDialog().showDialog();
+        	        if (newPerformer != null) {
+        	            comboBoxPerformer.addItem(newPerformer.getName());
+        	            performers.add(newPerformer);
+        	        }
         	    }
         	});
         }
@@ -404,6 +524,28 @@ public class MainAppWindow {
     private JComboBox getComboBox_1() {
         if (comboBoxSongs == null) {
         	comboBoxSongs = new JComboBox();
+        	comboBoxSongs.addItemListener(new ItemListener() {
+        	    public void itemStateChanged(ItemEvent e) {
+        	        if (e.getStateChange() == ItemEvent.SELECTED) {
+        	            boolean found = false;
+        	            int i = 0;
+        	            while (!found && (i < songs.size())) {
+                            if (songs.get(i).getTitle().equals((String) comboBoxSongs.getSelectedItem())) {
+                                found = true;
+                                break;
+                            }
+                            i++;
+        	            }
+        	            if (found) {
+        	                textFieldTitle.setText(songs.get(i).getTitle());
+        	                textFieldYear.setText(Integer.toString(songs.get(i).getYear()));
+        	                textAreaLyrics.setText(songs.get(i).getLyrics());
+        	                lblSongs.setText("A nice song: " + (String) comboBoxSongs.getSelectedItem());
+        	                lblIllustration.setIcon(songs.get(i).getIcon());
+        	            }
+        	        }
+        	    }
+        	});
         }
         return comboBoxSongs;
     }
@@ -412,5 +554,25 @@ public class MainAppWindow {
             newPerformerDialog = new NewPerformerDialog(frmBecauseTheNight, true);
         }
         return newPerformerDialog;
+    }
+    private JButton getBtnSelectIllustration() {
+        if (btnSelectIllustration == null) {
+        	btnSelectIllustration = new JButton("Select illustration");
+        	btnSelectIllustration.addActionListener(new ActionListener() {
+        	    public void actionPerformed(ActionEvent arg0) {
+        	        JFileChooser c = new JFileChooser(Utility.mkProjectSubdir("resources"));
+        	        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        	            "Image files", "jpg", "jpeg", "png", "gif");
+        	        c.setFileFilter(filter);
+        	        int returnVal = c.showOpenDialog(frmBecauseTheNight);
+        	        if(returnVal == JFileChooser.APPROVE_OPTION) {
+//        	           System.out.println("You chose to open this file: " +
+//        	                c.getSelectedFile().getName());
+        	            lblIllustration.setIcon(new ImageIcon(Utility.mkProjectSubdir("resources") + '\\' + c.getSelectedFile().getName()));
+        	        }
+        	    }
+        	});
+        }
+        return btnSelectIllustration;
     }
 }

@@ -38,6 +38,7 @@ import music.enums.Genre;
 import music.enums.GuitarRole;
 import music.enums.Instrument;
 import music.enums.Vocals;
+import util.Utility;
 
 public class Test {
     
@@ -512,6 +513,14 @@ public class Test {
         Song gloryDays = Song.deserialize("Glory Days.serialized");
         System.out.println("Song deserialized.");
         System.out.println(gloryDays);
+    }
+    
+    public void testProjectDir() {
+        System.out.println(Utility.getProjectDir());
+    }
+    
+    public void testMkProjectSubdir() {
+        System.out.println(Utility.mkProjectSubdir("resources"));
     }
     
 }

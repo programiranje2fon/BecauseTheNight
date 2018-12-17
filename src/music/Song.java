@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import javax.swing.Icon;
+
 public class Song implements Serializable {
     
     static final long serialVersionUID = 2242L;
@@ -24,10 +26,22 @@ public class Song implements Serializable {
     private int year;
     private Performer performer;
     
+    private Icon icon;
+    private String lyrics;
+    
     static {
         concept = "A nice piece of music";
     }
     
+    public Song(String title, int year, Performer performer, Icon icon, String lyrics) {
+        super();
+        this.title = title;
+        this.year = year;
+        this.performer = performer;
+        this.icon = icon;
+        this.lyrics = lyrics;
+    }
+
     public Song(String title, int year, Performer performer) {
         super();
         this.title = title;
@@ -137,6 +151,22 @@ public class Song implements Serializable {
 
     public static void setConcept(String concept) {
         Song.concept = concept;
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+    }
+
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
     }
 
 }

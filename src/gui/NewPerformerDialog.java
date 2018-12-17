@@ -17,11 +17,13 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import music.Performance;
 import music.Performer;
 
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.util.GregorianCalendar;
 import java.awt.event.ActionEvent;
 
 public class NewPerformerDialog extends JDialog {
@@ -42,7 +44,7 @@ public class NewPerformerDialog extends JDialog {
     private JSpinner spinnerMonth;
     private JSpinner spinnerDay;
     private JLabel lblAliveAndKicking;
-    private JComboBox comboBox;
+    private JComboBox comboBoxAliveAndKicking;
     
     private Performer performer;
     private NewPerformerDialog thisNewDialog = this;
@@ -98,8 +100,24 @@ public class NewPerformerDialog extends JDialog {
         	btnOk = new JButton("OK");
         	btnOk.addActionListener(new ActionListener() {
         	    public void actionPerformed(ActionEvent e) {
+//        	        performer = null;
+                    performer = new Performer();
+                    performer.setName(textFieldName.getText());
+                    performer.setAge(Integer.parseInt(textFieldAge.getText()));
+                    if (((String) comboBoxAliveAndKicking.getSelectedItem()).equals("active")) {
+                        performer.setAliveAndKicking(true);
+                    } else {
+                        performer.setAliveAndKicking(false);
+                    }
+                    Performance performance = new Performance();
+                    performance.setLocation(textFieldLocation.getText());
+                    performance.setDate(new GregorianCalendar(((Integer) spinnerYear.getValue()).intValue(),
+                            ((Integer) spinnerMonth.getValue()).intValue() - 1, 
+                            ((Integer) spinnerDay.getValue()).intValue()));
+                    if ((performer.getName() == null) || (performer.getName().equals(""))) {
+                        performer = null;
+                    }
                     thisNewDialog.setVisible(false);
-        	        performer = null;
         	    }
         	});
         }
@@ -134,7 +152,7 @@ public class NewPerformerDialog extends JDialog {
         	panelBasicInfo.add(getLblAge(), "cell 0 1,alignx leading,aligny center");
         	panelBasicInfo.add(getTextFieldAge(), "cell 1 1,growx");
         	panelBasicInfo.add(getLblAliveAndKicking(), "cell 0 2,alignx trailing");
-        	panelBasicInfo.add(getComboBox(), "cell 1 2,growx");
+        	panelBasicInfo.add(getComboBoxAliveAndKicking(), "cell 1 2,growx");
         }
         return panelBasicInfo;
     }
@@ -220,11 +238,13 @@ public class NewPerformerDialog extends JDialog {
         }
         return lblAliveAndKicking;
     }
-    private JComboBox getComboBox() {
-        if (comboBox == null) {
-        	comboBox = new JComboBox();
+    private JComboBox getComboBoxAliveAndKicking() {
+        if (comboBoxAliveAndKicking == null) {
+        	comboBoxAliveAndKicking = new JComboBox();
+            comboBoxAliveAndKicking.addItem("active");
+            comboBoxAliveAndKicking.addItem("not active");
         }
-        return comboBox;
+        return comboBoxAliveAndKicking;
     }
     public Performer showDialog() {
         this.setVisible(true);
